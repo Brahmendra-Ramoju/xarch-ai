@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xArch AI</title>
+<script>if(window.matchMedia("(prefers-color-scheme: light)").matches){document.documentElement.setAttribute("data-theme","light")}else{document.documentElement.setAttribute("data-theme","dark")}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #08080a;
+  --bg2:       #101014;
+  --bg3:       #16161c;
+  --bg4:       #1c1c24;
+  --border:    rgba(255,255,255,0.05);
+  --border2:   rgba(255,255,255,0.08);
+  --border3:   rgba(255,255,255,0.12);
+  --text:      #f0f0f2;
+  --text2:     #8888a0;
+  --text3:     #44444e;
+  --gold:      #c8a44a;
+  --gold2:     #e6c877;
+  --gold-bg:   rgba(200,164,74,0.08);
+  --gold-bdr:  rgba(200,164,74,0.20);
+  --blue:      #5b9cf6;
+  --blue-bg:   rgba(91,156,246,0.08);
+  --blue-bdr:  rgba(91,156,246,0.20);
+  --green:     #4ade80;
+  --green-bg:  rgba(74,222,128,0.07);
+  --green-bdr: rgba(74,222,128,0.18);
+  --violet:    #b07ef8;
+  --violet-bg: rgba(176,126,248,0.07);
+  --violet-bdr:rgba(176,126,248,0.18);
+  --coral:     #f87171;
+  --coral-bg:  rgba(248,113,113,0.07);
+  --coral-bdr: rgba(248,113,113,0.16);
+  --radius:    14px;
+  --font:      'Inter', sans-serif;
+  --serif:     'Playfair Display', serif;
+  --mono:      'JetBrains Mono', monospace;
+}
+
+[data-theme="light"] {
+  --bg:        #f5f4f0;
+  --bg2:       #ffffff;
+  --bg3:       #efede8;
+  --bg4:       #e8e6e0;
+  --border:    rgba(0,0,0,0.05);
+  --border2:   rgba(0,0,0,0.08);
+  --border3:   rgba(0,0,0,0.12);
+  --text:      #18181a;
+  --text2:     #60606a;
+  --text3:     #a0a0a8;
+  --gold:      #9a6e1a;
+  --gold2:     #7a5210;
+  --gold-bg:   rgba(154,110,26,0.06);
+  --gold-bdr:  rgba(154,110,26,0.16);
+  --blue:      #2563eb;
+  --blue-bg:   rgba(37,99,235,0.06);
+  --blue-bdr:  rgba(37,99,235,0.16);
+  --green:     #16a34a;
+  --green-bg:  rgba(22,163,74,0.06);
+  --green-bdr: rgba(22,163,74,0.16);
+  --violet:    #7c3aed;
+  --violet-bg: rgba(124,58,237,0.06);
+  --violet-bdr:rgba(124,58,237,0.16);
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ambient glow */
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(200,164,74,0.03) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* HEADER */
+header {
+  width: 100%;
+  max-width: 720px;
+  padding: 48px 24px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, var(--gold) 0%, #6a4010 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: #08080a;
+  letter-spacing: -0.3px;
+  flex-shrink: 0;
+}
+
+.logo-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.2px;
+}
+
+.logo-badge {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-bg);
+  border: 1px solid var(--gold-bdr);
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+
+.theme-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text2);
+  transition: all 0.2s;
+}
+
+.theme-btn:hover { background: var(--bg4); color: var(--text); }
+.theme-btn svg { width: 15px; height: 15px; fill: currentColor; }
+.dark-icon { display: block; }
+.light-icon { display: none; }
+[data-theme="light"] .dark-icon { display: none; }
+[data-theme="light"] .light-icon { display: block; }
+
+/* HERO */
+.hero { margin-bottom: 24px; }
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.eyebrow-line {
+  height: 1px;
+  width: 24px;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+.eyebrow-text {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: 40px;
+  line-height: 1.12;
+  color: var(--text);
+  letter-spacing: -0.3px;
+  margin-bottom: 12px;
+}
+
+.hero-title em { font-style: italic; color: var(--gold); }
+[data-theme="light"] .hero-title em { color: var(--gold2); }
+
+.hero-sub {
+  font-size: 14.5px;
+  color: var(--text2);
+  line-height: 1.65;
+  max-width: 480px;
+  font-weight: 300;
+}
+
+/* MODE PILLS */
+.mode-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.mpill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: var(--bg2);
+  font-size: 12.5px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.mpill:hover { border-color: var(--border3); color: var(--text); }
+
+.mpill.active[data-color="gold"]   { border-color: var(--gold-bdr);   background: var(--gold-bg);   color: var(--gold);   }
+.mpill.active[data-color="blue"]   { border-color: var(--blue-bdr);   background: var(--blue-bg);   color: var(--blue);   }
+.mpill.active[data-color="green"]  { border-color: var(--green-bdr);  background: var(--green-bg);  color: var(--green);  }
+.mpill.active[data-color="violet"] { border-color: var(--violet-bdr); background: var(--violet-bg); color: var(--violet); }
+
+.mpill-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+/* CHAT */
+main {
+  width: 100%;
+  max-width: 720px;
+  padding: 32px 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text3);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.msg {
+  display: flex;
+  gap: 12px;
+  animation: msgIn 0.25s ease forwards;
+  opacity: 0;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.msg.user { flex-direction: row-reverse; }
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.avatar.ai {
+  background: linear-gradient(145deg, var(--gold) 0%, #6a4010 100%);
+  color: #08080a;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.avatar.user {
+  background: linear-gradient(145deg, #4f7ef7, #6c3aed);
+  color: white;
+}
+
+.msg-body { flex: 1; min-width: 0; }
+.msg.user .msg-body { display: flex; justify-content: flex-end; }
+
+.user-bubble {
+  display: inline-block;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  border-bottom-right-radius: 4px;
+  padding: 10px 14px;
+  font-size: 14.5px;
+  color: var(--text);
+  max-width: 80%;
+  line-height: 1.6;
+}
+
+.ai-bubble { width: 100%; }
+
+.mode-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--text3);
+  margin-bottom: 7px;
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+}
+
+.mode-label-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+/* INTROSPECTION */
+.intro-panel {
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: var(--bg2);
+  transition: border-color 0.2s;
+}
+
+.intro-panel:hover { border-color: var(--border3); }
+
+.intro-hdr {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+  border-bottom: 1px solid transparent;
+}
+
+.intro-hdr:hover { background: var(--bg3); }
+.intro-hdr.open  { border-bottom-color: var(--border); }
+
+.intro-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.intro-icon svg {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.intro-title {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.intro-count {
+  font-size: 10.5px;
+  color: var(--text3);
+  font-family: var(--mono);
+}
+
+.intro-chevron {
+  width: 13px;
+  height: 13px;
+  color: var(--text3);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.intro-hdr.open .intro-chevron { transform: rotate(180deg); }
+
+.intro-body {
+  display: none;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.intro-body.open { display: flex; }
+
+.intro-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 9px 13px;
+  font-size: 12.5px;
+  color: var(--text2);
+  line-height: 1.5;
+  border-bottom: 1px solid var(--border);
+}
+
+.intro-step:last-child { border-bottom: none; }
+
+.step-badge {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-family: var(--mono);
+  color: var(--text3);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-label {
+  font-weight: 500;
+  color: var(--text);
+  font-size: 12px;
+  margin-bottom: 1px;
+}
+
+.step-desc { color: var(--text2); font-size: 12.5px; }
+
+/* RESPONSE */
+.response-text {
+  font-size: 14.5px;
+  line-height: 1.72;
+  color: var(--text);
+}
+
+.response-text p { margin-bottom: 10px; }
+.response-text p:last-child { margin-bottom: 0; }
+.response-text strong { font-weight: 500; }
+
+.response-text code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: var(--gold);
+}
+
+.response-text pre {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 10px 0;
+  overflow-x: auto;
+}
+
+.response-text pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--text);
+  font-size: 12.5px;
+}
+
+/* TYPING */
+.typing-wrap {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 14px 0 4px;
+}
+
+.typing-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text3);
+  animation: tdot 1.5s ease infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.18s; }
+.typing-dot:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes tdot {
+  0%, 55%, 100% { opacity: 0.25; transform: scale(1); }
+  28% { opacity: 1; transform: scale(1.4); }
+}
+
+/* BLOCKED */
+.blocked-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  background: var(--coral-bg);
+  border: 1px solid var(--coral-bdr);
+  border-radius: var(--radius);
+  padding: 11px 13px;
+}
+
+.blocked-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  background: rgba(248,113,113,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.blocked-icon svg {
+  width: 10px;
+  height: 10px;
+  stroke: var(--coral);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.blocked-text { font-size: 13.5px; color: var(--text2); line-height: 1.55; }
+
+/* INPUT */
+.input-zone {
+  width: 100%;
+  max-width: 720px;
+  padding: 0 24px 32px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: linear-gradient(to top, var(--bg) 70%, transparent 100%);
+  padding-top: 20px;
+}
+
+.input-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--border), 0 10px 36px rgba(0,0,0,0.4);
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-card:focus-within {
+  border-color: var(--gold-bdr);
+  box-shadow: 0 0 0 3px var(--gold-bg), 0 10px 36px rgba(0,0,0,0.4);
+}
+
+textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14.5px;
+  line-height: 1.6;
+  padding: 15px 17px 10px;
+  resize: none;
+  min-height: 52px;
+  max-height: 200px;
+  display: block;
+}
+
+textarea::placeholder { color: var(--text3); }
+
+.input-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px 9px;
+  border-top: 1px solid var(--border);
+  gap: 10px;
+}
+
+.hints { display: flex; gap: 5px; flex-wrap: wrap; flex: 1; min-width: 0; }
+
+.hint {
+  font-size: 11.5px;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 9px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.hint:hover { color: var(--text2); border-color: var(--border2); background: var(--bg4); }
+
+.send-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--gold);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.send-btn:hover { filter: brightness(1.1); transform: scale(1.05); }
+.send-btn:active { transform: scale(0.95); }
+.send-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; filter: none; }
+
+.send-btn svg {
+  width: 14px;
+  height: 14px;
+  stroke: #08080a;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.disclaimer {
+  text-align: center;
+  font-size: 10.5px;
+  color: var(--text3);
+  margin-top: 9px;
+  line-height: 1.5;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+@media (max-width: 600px) {
+  .hero-title { font-size: 30px; }
+  header { padding-top: 28px; }
+  .hints { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-mark">xA</div>
+      <span class="logo-name">xArch AI</span>
+      <span class="logo-badge">Sovereign</span>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">
+      <svg class="dark-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="light-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">
+      <div class="eyebrow-line"></div>
+      <span class="eyebrow-text">xArch AI Research Laboratory</span>
+    </div>
+    <h1 class="hero-title">Think deeper.<br><em>Reason sovereign.</em></h1>
+    <p class="hero-sub">An AI that introspects before it speaks — examining what it knows, its limits, and the right approach — then answers with genuine clarity.</p>
+  </div>
+
+  <div class="mode-row">
+    <button class="mpill active" data-mode="auto" data-color="gold" onclick="setMode(this)">
+      <span class="mpill-dot"></span> Auto
+    </button>
+    <button class="mpill" data-mode="mentor" data-color="violet" onclick="setMode(this)">
+      <span class="mpill-dot"></span> Wise Mentor
+    </button>
+    <button class="mpill" data-mode="professor" data-color="blue" onclick="setMode(this)">
+      <span class="mpill-dot"></span> Brilliant Professor
+    </button>
+    <button class="mpill" data-mode="friend" data-color="green" onclick="setMode(this)">
+      <span class="mpill-dot"></span> Trusted Friend
+    </button>
+  </div>
+</header>
+
+<main id="chat">
+  <div class="divider">beginning of conversation</div>
+  <div class="msg ai" style="animation-delay:0.05s">
+    <div class="avatar ai">xA</div>
+    <div class="msg-body">
+      <div class="ai-bubble">
+        <div class="mode-label">
+          <span class="mode-label-dot" style="background:var(--gold)"></span>
+          sovereign · ready
+        </div>
+        <div class="response-text">
+          <p>Hello. I'm xArch AI — a sovereign reasoning system built by the xArch AI Research Laboratory.</p>
+          <p>Before I answer anything, I examine what I know, what my limits are, and what approach will serve you best. Then I give you my most honest, refined response.</p>
+          <p>Ask me anything — science, life, philosophy, code, or something you've been sitting with. I adapt to what you need.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="input-zone">
+  <div class="input-card">
+    <textarea id="userInput" placeholder="Ask anything…" rows="1"
+      onkeydown="handleKey(event)"
+      oninput="autoResize(this)"></textarea>
+    <div class="input-footer">
+      <div class="hints">
+        <span class="hint" onclick="fill('Explain black holes simply')">Black holes</span>
+        <span class="hint" onclick="fill('I feel stuck in life. What should I do?')">Life advice</span>
+        <span class="hint" onclick="fill('Write a binary search in Python')">Code</span>
+        <span class="hint" onclick="fill('What is consciousness?')">Philosophy</span>
+        <span class="hint" onclick="fill('How do I build real confidence?')">Confidence</span>
+      </div>
+      <button class="send-btn" id="sendBtn" onclick="send()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+  <p class="disclaimer">xArch AI declines harmful or inappropriate requests · xArch AI Research Laboratory · research@xarch.ai</p>
+</div>
+
+<script>
+const API = '/api/chat';
+const MDL = 'claude-sonnet-4-20250514';
+let mode = 'auto';
+let busy = false;
+let history = [];
+
+const colorVars = {
+  gold:   { main:'var(--gold)',   bg:'var(--gold-bg)',   bdr:'var(--gold-bdr)'   },
+  violet: { main:'var(--violet)', bg:'var(--violet-bg)', bdr:'var(--violet-bdr)' },
+  blue:   { main:'var(--blue)',   bg:'var(--blue-bg)',   bdr:'var(--blue-bdr)'   },
+  green:  { main:'var(--green)',  bg:'var(--green-bg)',  bdr:'var(--green-bdr)'  },
+};
+
+function toggleTheme() {
+  const h = document.documentElement;
+  h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+
+function setMode(btn) {
+  mode = btn.dataset.mode;
+  document.querySelectorAll('.mpill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function detectMode(text) {
+  const t = text.toLowerCase();
+  if (/\b(feel|life|advice|lost|stuck|purpose|relationship|meaning|sad|happy|anxious|love|friend|family|struggling|afraid|hope|dream|lonely|hurt|worried)\b/.test(t)) return 'mentor';
+  if (/\b(code|function|algorithm|bug|error|python|javascript|sql|api|debug|class|array|loop|math|physics|chemistry|science|formula|equation|data)\b/.test(t)) return 'professor';
+  if (/\b(what do you think|your opinion|honestly|between us|personally|casually|quick question|hey|just curious|what would you)\b/.test(t)) return 'friend';
+  return 'professor';
+}
+
+function buildSystem(m) {
+  const personas = {
+    auto:      'Intelligently adapt your tone to what the user needs. Life questions → wise mentor warmth. Technical → professor precision. Casual → friend directness.',
+    mentor:    'You are a Wise Mentor. Warm, deep, genuine care. Draw on timeless wisdom. Never lecture — illuminate. Unhurried, profound, honest.',
+    professor: 'You are a Brilliant Professor. Precise, rigorous, intellectually alive. Make complex ideas crystal clear. Perfect analogies. Celebrate curiosity.',
+    friend:    'You are a Trusted Friend. Direct, casual, genuinely helpful. No jargon. No formality. Just honest thinking from someone who cares.'
+  };
+  return `You are xArch AI — a sovereign reasoning system created by xArch AI Research Laboratory (XARL), founded by Surya Sai Brahmendra Ramoju.
+
+PERSONA: ${personas[m]}
+
+Before every answer, perform genuine self-examination. Return ONLY valid JSON:
+
+{
+  "mode_label": "[4-6 words describing your mode and why]",
+  "mode_color": "[one of: gold, violet, blue, green]",
+  "steps": [
+    {"label": "Understanding", "text": "[what the user is really asking — one sentence]"},
+    {"label": "What I know", "text": "[what you genuinely know — honest about limits — one sentence]"},
+    {"label": "Approach", "text": "[how you will answer and why — one sentence]"},
+    {"label": "Honest caveat", "text": "[one real limitation or nuance — one sentence]"}
+  ],
+  "response": "[Your full response. Use \\n\\n for paragraphs. Be genuinely excellent.]"
+}
+
+SAFETY: If asked for anything harmful, illegal, explicit, or inappropriate — decline briefly and respectfully in the response field.
+
+Return ONLY the JSON. No markdown fences. No extra text.`;
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 200) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+}
+
+function fill(text) {
+  const el = document.getElementById('userInput');
+  el.value = text;
+  autoResize(el);
+  el.focus();
+}
+
+function esc(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmt(text) {
+  return text.split(/\n\n+/).map(p => {
+    p = p.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+    p = p.replace(/`([^`]+)`/g, '<code>$1</code>');
+    p = p.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    p = p.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    if (p.startsWith('<pre>')) return p;
+    return `<p>${p.replace(/\n/g,'<br>')}</p>`;
+  }).join('');
+}
+
+function scroll() {
+  setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 60);
+}
+
+function addUser(text) {
+  const chat = document.getElementById('chat');
+  const d = document.createElement('div');
+  d.className = 'msg user';
+  d.innerHTML = `<div class="avatar user">U</div><div class="msg-body"><div class="user-bubble">${esc(text)}</div></div>`;
+  chat.appendChild(d);
+  scroll();
+}
+
+function addTyping() {
+  const chat = document.getElementById('chat');
+  const d = document.createElement('div');
+  d.className = 'msg ai';
+  d.id = 'typing';
+  d.innerHTML = `<div class="avatar ai">xA</div><div class="msg-body"><div class="ai-bubble"><div class="typing-wrap"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
+  chat.appendChild(d);
+  scroll();
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing');
+  if (el) el.remove();
+}
+
+function addAI(parsed) {
+  const chat = document.getElementById('chat');
+  const color = parsed.mode_color || 'gold';
+  const cv = colorVars[color] || colorVars.gold;
+  const steps = parsed.steps || [];
+  const label = parsed.mode_label || 'sovereign';
+  const iid = 'i' + Date.now();
+
+  const stepsHtml = steps.map((s, i) => `
+    <div class="intro-step">
+      <div class="step-badge">${i+1}</div>
+      <div>
+        <div class="step-label">${esc(s.label)}</div>
+        <div class="step-desc">${esc(s.text)}</div>
+      </div>
+    </div>`).join('');
+
+  const d = document.createElement('div');
+  d.className = 'msg ai';
+  d.innerHTML = `
+    <div class="avatar ai" style="background:linear-gradient(145deg,${cv.main},#4a2c08)">xA</div>
+    <div class="msg-body">
+      <div class="ai-bubble">
+        <div class="mode-label">
+          <span class="mode-label-dot" style="background:${cv.main}"></span>
+          ${esc(label)}
+        </div>
+        <div class="intro-panel">
+          <div class="intro-hdr" onclick="toggleIntro('${iid}',this)">
+            <div class="intro-icon" style="background:${cv.bg};border:1px solid ${cv.bdr}">
+              <svg viewBox="0 0 24 24" style="stroke:${cv.main}">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+            </div>
+            <span class="intro-title" style="color:${cv.main}">Sovereign Introspection</span>
+            <span class="intro-count">${steps.length} steps</span>
+            <svg class="intro-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+          <div class="intro-body" id="${iid}">${stepsHtml}</div>
+        </div>
+        <div class="response-text">${fmt(parsed.response || '')}</div>
+      </div>
+    </div>`;
+  chat.appendChild(d);
+  scroll();
+}
+
+function addBlocked(msg) {
+  const chat = document.getElementById('chat');
+  const d = document.createElement('div');
+  d.className = 'msg ai';
+  d.innerHTML = `
+    <div class="avatar ai">xA</div>
+    <div class="msg-body"><div class="ai-bubble">
+      <div class="blocked-card">
+        <div class="blocked-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="blocked-text">${esc(msg)}</div>
+      </div>
+    </div></div>`;
+  chat.appendChild(d);
+  scroll();
+}
+
+function toggleIntro(id, hdr) {
+  document.getElementById(id).classList.toggle('open');
+  hdr.classList.toggle('open');
+}
+
+async function send() {
+  const el = document.getElementById('userInput');
+  const text = el.value.trim();
+  if (!text || busy) return;
+
+  busy = true;
+  document.getElementById('sendBtn').disabled = true;
+  el.value = '';
+  el.style.height = 'auto';
+
+  addUser(text);
+  history.push({ role: 'user', content: text });
+
+  const activeMode = mode === 'auto' ? detectMode(text) : mode;
+  addTyping();
+
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: MDL,
+        max_tokens: 1000,
+        system: buildSystem(activeMode),
+        messages: history
+      })
+    });
+
+    const data = await res.json();
+    removeTyping();
+
+    const raw = data?.content?.[0]?.text || '';
+    let parsed;
+
+    try {
+      const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+      parsed = JSON.parse(clean);
+    } catch(e) {
+      parsed = {
+        mode_label: 'sovereign · general',
+        mode_color: 'gold',
+        steps: [
+          { label: 'Processing', text: 'Carefully considering your question.' },
+          { label: 'Approach', text: 'Providing my most honest response.' }
+        ],
+        response: raw
+      };
+    }
+
+    history.push({ role: 'assistant', content: raw });
+
+    const r = (parsed.response || '').toLowerCase();
+    if (r.includes("can't help") || r.includes("cannot help") || r.includes("won't be able") || r.includes("decline") || r.includes("unable to assist")) {
+      addBlocked(parsed.response);
+    } else {
+      addAI(parsed);
+    }
+
+  } catch(err) {
+    removeTyping();
+    addBlocked('Something went wrong. Please try again.');
+  }
+
+  busy = false;
+  document.getElementById('sendBtn').disabled = false;
+  el.focus();
+}
+</script>
+</body>
+</html>
